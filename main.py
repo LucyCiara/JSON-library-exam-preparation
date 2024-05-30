@@ -1,0 +1,64 @@
+import json
+import matplotlib.pyplot as plt
+import numpy as np
+
+# A function for extracting the data from a JSON file.
+def dataFromFileExtraction(filename: str):
+    with open(filename, encoding = "utf-8") as inputFile:
+        return json.load(inputFile)
+
+# # Creates lists of all the categories.
+# def categories(data: list):
+#     activities = []
+#     genders = []
+#     for item in data[1:]:
+#         if item["alle aktiviteter"] not in activities:
+#             activities.append(item["alle aktiviteter"])
+#         if item["kjønn"] not in genders:
+#             genders.append(item("kjønn"))
+
+# A function for plotting values on a bar diagram.
+def barGraphing(yValues: list, xValues: list, slice: list):
+    # Slices the variables.
+    yValues = yValues[slice[0]:slice[1]]
+    xValues = xValues[slice[0]:slice[1]]
+
+    # Various pyplot functions for displaying the diagram.
+    plt.barh(yValues, xValues)
+    plt.subplots_adjust(left=0.25)
+    plt.gca().invert_yaxis()
+    plt.title("...")
+    plt.grid()
+    plt.show()
+
+# A function for plotting values on a bar diagram with multiple parallell bars.
+def multiBarGraphing(yValues: list, xValues1: list, xValues2: list, slice: list):
+    # Slices the variables.
+    yValues = yValues[slice[0]:slice[1]]
+    xValues1 = xValues1[slice[0]:slice[1]]
+    xValues2 = xValues2[slice[0]:slice[1]]
+
+    # Creates new values.
+    barWidth = 0.4
+    yValues1 = np.arange(len(xValues1))
+    yValues2 = [x + barWidth for x in yValues1]
+
+    # Various pyplot functions for displaying the diagram.
+    plt.barh(yValues1, xValues1, height=barWidth)
+    plt.barh(yValues2, xValues2, height=barWidth)
+    plt.subplots_adjust(left=0.25)
+    plt.gca().invert_yaxis()
+    plt.title("...")
+    plt.ylabel('Aktivitet', fontweight ='bold', fontsize = 15) 
+    plt.xlabel('Tid brukt (timer og minutter)', fontweight ='bold', fontsize = 15) 
+    plt.yticks(yValues1, yValues)
+    plt.grid()
+    plt.show()
+
+filename = "05994_20240126-145813-json.json"
+data = dataFromFileExtraction(filename)
+yValuesAktiviteter = [item["alle aktiviteter"] for item in data[1:] if item["kjønn"] == "Alle"]
+xValuesMenn = [item["Tidsbruk 2000 I alt"] for item in data[1:] if item["kjønn"] == "Menn"]
+xValuesKvinner = [item["Tidsbruk 2000 I alt"] for item in data[1:] if item["kjønn"] == "Kvinner"]
+barGraphing(yValuesAktiviteter, xValuesMenn, [0, len(yValuesAktiviteter)])
+multiBarGraphing(yValuesAktiviteter, xValuesMenn, xValuesKvinner, [0, len(yValuesAktiviteter)])
