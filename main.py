@@ -41,6 +41,7 @@ def multiBarGraphing(xValues: list, yValueNames: list, slice: list, labels: list
     # Creates new values.
     barWidth = 0.2
 
+    # Various pyplot functions for displaying the diagram, and a loop for creating a variable amount of graphs
     for i in range(len(xValues)):
         if i == 0:
             yValues.append(np.arange(len(xValues[0])))
@@ -48,9 +49,6 @@ def multiBarGraphing(xValues: list, yValueNames: list, slice: list, labels: list
             yValues.append([x + barWidth*i for x in yValues[0]])
 
         plt.barh(yValues[i], xValues[i], height=barWidth, label=labels[i])
-
-    # Various pyplot functions for displaying the diagram.
-
     plt.subplots_adjust(left=0.25)
     plt.gca().invert_yaxis()
     plt.title("...")
